@@ -1,0 +1,139 @@
+// Youtube video here : http://www.youtube.com/watch?v=g_qiXhj66R8
+
+// This is my first Arduino project, an experimental implementation of a levelling device.
+// It is consisted of an accelerometer (MMA7260) which is used as an input,
+// an 8 by 8 LED matrix which is used as an output, and an Arduino Duemilanove
+// which combines these two together.
+// The project uses almost all the available pins of the microprocessor's mainboard
+// (22 out of 28) so it must be good for educational perpuses.
+// The project has a moderate difficulty of implementation.
+
+// You can find BreadBoard's Schematic at http://is.gd/xt8KJS
+// or at https://docs.google.com/file/d/0BxvXtnuB1ls6YjQwYmFhYjctZTdjNi00MDAzLThlZjAtZmU5MDdjOWRmNmMy/edit
+
+// Please mind that the first pin of the 8x8 LED Matrix is placed at the lower left corner.
+// Also mind that the pins with numbers 5,6,7,8,9,10,11,12 of the LCD Matrix are NC (not connected).
+// The pins 1,2,3,4 are connected to the pins 9,8,7 and 6 of the Arduino PCB.
+// Pins 24,23,22,21 of the LCD Matrix are connected to the pins 2,3,4 and 5 of the Aruino PCB.
+// This Pins all hold the 'Y' values of the matrix.
+// The 'X' values of the matrix are the pins 20,19,18,17,16,15,14 and 13 which are connected
+// (through an 1kOhm resistor) to the pins 10,11,12,13,14,15,16 and 17 of the Arduino PCB.
+// The pins 14,15,16 and 17 of the Arduino are also stated as 'Analog inputs' 0,1,2 and 3 (A0,A1,A2,A3).
+// When this 4 analog inputs switch to output mode, their numbering changes to 14,15,16 and 17. :-)
+// The pins that control the 'Y' values of the matrix are on a positive voltage (+5V)
+// while the pins that control the 'X' values of the matrix are on a negative voltage (0V).
+// In order to power on a LED both X and Y coordinates must be powered accordingly.
+
+
+int X1 = 10; int X2 = 11; int X3 = 12; int X4 = 13;
+int X5 = 14; int X6 = 15; int X7 = 16; int X8 = 17;
+int Y1 = 2;  int Y2 = 3;  int Y3 = 4;  int Y4 = 5;
+int Y5 = 6;  int Y6 = 7;  int Y7 = 8;  int Y8 = 9;
+int X = 4;
+int Y = 5;
+
+void setup()
+{
+ // Un-comment only one of the two following lines each time. The first line is used
+ // with the accelerometer (A7260). The second one is used with the potensiometers.
+    analogReference(EXTERNAL);
+ // analogReference(DEFAULT);
+ 
+ pinMode(X, INPUT); pinMode(Y, INPUT);
+ pinMode(X1, OUTPUT); pinMode(X2, OUTPUT); pinMode(X3, OUTPUT); pinMode(X4, OUTPUT);
+ pinMode(X5, OUTPUT); pinMode(X6, OUTPUT); pinMode(X7, OUTPUT); pinMode(X8, OUTPUT);
+ pinMode(Y1, OUTPUT); pinMode(Y2, OUTPUT); pinMode(Y3, OUTPUT); pinMode(Y4, OUTPUT);
+ pinMode(Y5, OUTPUT); pinMode(Y6, OUTPUT); pinMode(Y7, OUTPUT); pinMode(Y8, OUTPUT);
+}
+
+void switchoff()
+{
+ digitalWrite(X1, HIGH); digitalWrite(X2, HIGH); digitalWrite(X3, HIGH); digitalWrite(X4, HIGH);
+ digitalWrite(X5, HIGH); digitalWrite(X6, HIGH); digitalWrite(X7, HIGH); digitalWrite(X8, HIGH);
+ digitalWrite(Y1,  LOW); digitalWrite(Y2,  LOW); digitalWrite(Y3,  LOW); digitalWrite(Y4,  LOW);
+ digitalWrite(Y5,  LOW); digitalWrite(Y6,  LOW); digitalWrite(Y7,  LOW); digitalWrite(Y8,  LOW);
+}
+
+void switchon(int row, int column) // Mind that X are in rows and Y are in columns!
+{
+ if (row == 1 && column == 1) { switchoff(); digitalWrite(X1, LOW); digitalWrite(Y1, HIGH); }
+  if (row == 2 && column == 1) { switchoff(); digitalWrite(X1, LOW); digitalWrite(Y2, HIGH); }
+   if (row == 3 && column == 1) { switchoff(); digitalWrite(X1, LOW); digitalWrite(Y3, HIGH); }
+    if (row == 4 && column == 1) { switchoff(); digitalWrite(X1, LOW); digitalWrite(Y4, HIGH); }
+     if (row == 5 && column == 1) { switchoff(); digitalWrite(X1, LOW); digitalWrite(Y5, HIGH); }
+      if (row == 6 && column == 1) { switchoff(); digitalWrite(X1, LOW); digitalWrite(Y6, HIGH); }
+       if (row == 7 && column == 1) { switchoff(); digitalWrite(X1, LOW); digitalWrite(Y7, HIGH); }
+        if (row == 8 && column == 1) { switchoff(); digitalWrite(X1, LOW); digitalWrite(Y8, HIGH); }
+ if (row == 1 && column == 2) { switchoff(); digitalWrite(X2, LOW); digitalWrite(Y1, HIGH); }
+  if (row == 2 && column == 2) { switchoff(); digitalWrite(X2, LOW); digitalWrite(Y2, HIGH); }
+   if (row == 3 && column == 2) { switchoff(); digitalWrite(X2, LOW); digitalWrite(Y3, HIGH); }
+    if (row == 4 && column == 2) { switchoff(); digitalWrite(X2, LOW); digitalWrite(Y4, HIGH); }
+     if (row == 5 && column == 2) { switchoff(); digitalWrite(X2, LOW); digitalWrite(Y5, HIGH); }
+      if (row == 6 && column == 2) { switchoff(); digitalWrite(X2, LOW); digitalWrite(Y6, HIGH); }
+       if (row == 7 && column == 2) { switchoff(); digitalWrite(X2, LOW); digitalWrite(Y7, HIGH); }
+        if (row == 8 && column == 2) { switchoff(); digitalWrite(X2, LOW); digitalWrite(Y8, HIGH); }
+ if (row == 1 && column == 3) { switchoff(); digitalWrite(X3, LOW); digitalWrite(Y1, HIGH); }
+  if (row == 2 && column == 3) { switchoff(); digitalWrite(X3, LOW); digitalWrite(Y2, HIGH); }
+   if (row == 3 && column == 3) { switchoff(); digitalWrite(X3, LOW); digitalWrite(Y3, HIGH); }
+    if (row == 4 && column == 3) { switchoff(); digitalWrite(X3, LOW); digitalWrite(Y4, HIGH); }
+     if (row == 5 && column == 3) { switchoff(); digitalWrite(X3, LOW); digitalWrite(Y5, HIGH); }
+      if (row == 6 && column == 3) { switchoff(); digitalWrite(X3, LOW); digitalWrite(Y6, HIGH); }
+       if (row == 7 && column == 3) { switchoff(); digitalWrite(X3, LOW); digitalWrite(Y7, HIGH); }
+        if (row == 8 && column == 3) { switchoff(); digitalWrite(X3, LOW); digitalWrite(Y8, HIGH); }
+ if (row == 1 && column == 4) { switchoff(); digitalWrite(X4, LOW); digitalWrite(Y1, HIGH); }
+  if (row == 2 && column == 4) { switchoff(); digitalWrite(X4, LOW); digitalWrite(Y2, HIGH); }
+   if (row == 3 && column == 4) { switchoff(); digitalWrite(X4, LOW); digitalWrite(Y3, HIGH); }
+    if (row == 4 && column == 4) { switchoff(); digitalWrite(X4, LOW); digitalWrite(Y4, HIGH); }
+     if (row == 5 && column == 4) { switchoff(); digitalWrite(X4, LOW); digitalWrite(Y5, HIGH); }
+      if (row == 6 && column == 4) { switchoff(); digitalWrite(X4, LOW); digitalWrite(Y6, HIGH); }
+       if (row == 7 && column == 4) { switchoff(); digitalWrite(X4, LOW); digitalWrite(Y7, HIGH); }
+        if (row == 8 && column == 4) { switchoff(); digitalWrite(X4, LOW); digitalWrite(Y8, HIGH); }
+ if (row == 1 && column == 5) { switchoff(); digitalWrite(X5, LOW); digitalWrite(Y1, HIGH); }
+  if (row == 2 && column == 5) { switchoff(); digitalWrite(X5, LOW); digitalWrite(Y2, HIGH); }
+   if (row == 3 && column == 5) { switchoff(); digitalWrite(X5, LOW); digitalWrite(Y3, HIGH); }
+    if (row == 4 && column == 5) { switchoff(); digitalWrite(X5, LOW); digitalWrite(Y4, HIGH); }
+     if (row == 5 && column == 5) { switchoff(); digitalWrite(X5, LOW); digitalWrite(Y5, HIGH); }
+      if (row == 6 && column == 5) { switchoff(); digitalWrite(X5, LOW); digitalWrite(Y6, HIGH); }
+       if (row == 7 && column == 5) { switchoff(); digitalWrite(X5, LOW); digitalWrite(Y7, HIGH); }
+        if (row == 8 && column == 5) { switchoff(); digitalWrite(X5, LOW); digitalWrite(Y8, HIGH); }
+ if (row == 1 && column == 6) { switchoff(); digitalWrite(X6, LOW); digitalWrite(Y1, HIGH); }
+  if (row == 2 && column == 6) { switchoff(); digitalWrite(X6, LOW); digitalWrite(Y2, HIGH); }
+   if (row == 3 && column == 6) { switchoff(); digitalWrite(X6, LOW); digitalWrite(Y3, HIGH); }
+    if (row == 4 && column == 6) { switchoff(); digitalWrite(X6, LOW); digitalWrite(Y4, HIGH); }
+     if (row == 5 && column == 6) { switchoff(); digitalWrite(X6, LOW); digitalWrite(Y5, HIGH); }
+      if (row == 6 && column == 6) { switchoff(); digitalWrite(X6, LOW); digitalWrite(Y6, HIGH); }
+       if (row == 7 && column == 6) { switchoff(); digitalWrite(X6, LOW); digitalWrite(Y7, HIGH); }
+        if (row == 8 && column == 6) { switchoff(); digitalWrite(X6, LOW); digitalWrite(Y8, HIGH); }
+ if (row == 1 && column == 7) { switchoff(); digitalWrite(X7, LOW); digitalWrite(Y1, HIGH); }
+  if (row == 2 && column == 7) { switchoff(); digitalWrite(X7, LOW); digitalWrite(Y2, HIGH); }
+   if (row == 3 && column == 7) { switchoff(); digitalWrite(X7, LOW); digitalWrite(Y3, HIGH); }
+    if (row == 4 && column == 7) { switchoff(); digitalWrite(X7, LOW); digitalWrite(Y4, HIGH); }
+     if (row == 5 && column == 7) { switchoff(); digitalWrite(X7, LOW); digitalWrite(Y5, HIGH); }
+      if (row == 6 && column == 7) { switchoff(); digitalWrite(X7, LOW); digitalWrite(Y6, HIGH); }
+       if (row == 7 && column == 7) { switchoff(); digitalWrite(X7, LOW); digitalWrite(Y7, HIGH); }
+        if (row == 8 && column == 7) { switchoff(); digitalWrite(X7, LOW); digitalWrite(Y8, HIGH); }
+ if (row == 1 && column == 8) { switchoff(); digitalWrite(X8, LOW); digitalWrite(Y1, HIGH); }
+  if (row == 2 && column == 8) { switchoff(); digitalWrite(X8, LOW); digitalWrite(Y2, HIGH); }
+   if (row == 3 && column == 8) { switchoff(); digitalWrite(X8, LOW); digitalWrite(Y3, HIGH); }
+    if (row == 4 && column == 8) { switchoff(); digitalWrite(X8, LOW); digitalWrite(Y4, HIGH); }
+     if (row == 5 && column == 8) { switchoff(); digitalWrite(X8, LOW); digitalWrite(Y5, HIGH); }
+      if (row == 6 && column == 8) { switchoff(); digitalWrite(X8, LOW); digitalWrite(Y6, HIGH); }
+       if (row == 7 && column == 8) { switchoff(); digitalWrite(X8, LOW); digitalWrite(Y7, HIGH); }
+        if (row == 8 && column == 8) { switchoff(); digitalWrite(X8, LOW); digitalWrite(Y8, HIGH); }
+}
+
+void loop()
+{
+int Xplace = analogRead(X);
+int Yplace = analogRead(Y);
+
+// Un-comment these lines if you install the accelerometer (AD7260).
+int Xdiscrete = map(Xplace, 600, 750, 1, 8);
+int Ydiscrete = map(Yplace, 500, 675, 1, 8);
+
+// Un-comment these lines if you install the two 22K potensiometers.
+// int Xdiscrete = map(Xplace, 0, 900, 1, 8);
+// int Ydiscrete = map(Yplace, 0, 900, 1, 8);
+
+switchon(Xdiscrete, Ydiscrete);
+}
